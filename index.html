@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QROGRAM | Coding Partner for Designers</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Oswald:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style>
+      :root {
+        --primary: #ffffff;
+        --secondary: #888888;
+        --accent: #3b82f6; /* Blue */
+      }
+      body {
+        background-color: #050505;
+        color: var(--primary);
+        font-family: 'Inter', sans-serif;
+        overflow-x: hidden;
+        margin: 0;
+      }
+      h1,
+      h2,
+      h3,
+      .font-display {
+        font-family: 'Oswald', sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      /* Canvas Background */
+      #canvas-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        z-index: -1;
+        opacity: 0.5;
+        pointer-events: none;
+      }
+
+      /* Glass Effect */
+      .glass-card {
+        background: rgba(20, 20, 20, 0.4);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      }
+      .glass-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(255, 255, 255, 0.2);
+        background: rgba(30, 30, 30, 0.6);
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+      }
+
+      /* Smooth Scroll */
+      html {
+        scroll-behavior: smooth;
+      }
+      ::selection {
+        background: #fff;
+        color: #000;
+      }
+
+      /* Badge for Option */
+      .badge-option {
+        font-size: 0.6rem;
+        padding: 2px 6px;
+        border: 1px solid #555;
+        border-radius: 4px;
+        color: #aaa;
+        margin-left: 8px;
+        vertical-align: middle;
+      }
+    </style>
+  </head>
+  <body class="antialiased">
+    <div id="canvas-container"></div>
+
+    <nav
+      class="fixed w-full z-50 px-6 md:px-12 py-6 flex justify-between items-center mix-blend-difference"
+    >
+      <div class="flex flex-col leading-none select-none cursor-pointer">
+        <span class="font-display text-2xl font-medium tracking-widest">QROGRAM</span>
+        <span class="text-[10px] text-gray-400 tracking-[0.4em] ml-0.5">CODING PARTNER</span>
+      </div>
+      <div class="hidden md:flex space-x-10 text-xs font-medium tracking-widest text-gray-300">
+        <a href="#about" class="hover:text-white transition-colors">ABOUT</a>
+        <a href="#service" class="hover:text-white transition-colors">SERVICE</a>
+        <a href="#contact" class="hover:text-white transition-colors">CONTACT</a>
+      </div>
+    </nav>
+
+    <section class="h-screen flex flex-col justify-center items-center text-center px-4 relative">
+      <div class="z-10 flex flex-col items-center max-w-4xl">
+        <div class="overflow-hidden mb-6">
+          <p
+            class="hero-sub text-xs md:text-sm tracking-[0.4em] text-gray-400 uppercase opacity-0 translate-y-10"
+          >
+            FOR DESIGNERS & AGENCIES
+          </p>
+        </div>
+
+        <h1
+          class="hero-title text-5xl md:text-7xl lg:text-9xl font-medium leading-[0.9] mb-8 opacity-0 translate-y-20"
+        >
+          BRING YOUR<br />
+          <span
+            class="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-600"
+            >DESIGN TO LIFE.</span
+          >
+        </h1>
+
+        <p
+          class="hero-text text-gray-400 text-sm md:text-lg max-w-xl leading-relaxed mb-12 opacity-0 translate-y-10"
+        >
+          デザインの持つ空気感や細部のニュアンスまで、<br />
+          丁寧にコードへ落とし込みます。
+        </p>
+
+        <div class="hero-btn opacity-0 translate-y-10">
+          <a
+            href="#service"
+            class="inline-flex items-center px-10 py-4 font-display tracking-widest text-black bg-white rounded-full hover:bg-gray-200 transition-transform hover:scale-105"
+          >
+            VIEW PLAN
+          </a>
+        </div>
+      </div>
+
+      <div class="absolute bottom-12 opacity-40 animate-pulse flex flex-col items-center">
+        <span class="text-[10px] tracking-widest mb-2">SCROLL</span>
+        <div class="w-px h-12 bg-gradient-to-b from-white to-transparent"></div>
+      </div>
+    </section>
+
+    <section id="about" class="py-32 md:py-48 px-6 md:px-20 relative z-10">
+      <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+        <div>
+          <h2 class="text-4xl md:text-6xl leading-tight reveal-text opacity-0">
+            DESIGN IS YOURS.<br />
+            <span class="text-gray-500">CODE IS OURS.</span>
+          </h2>
+        </div>
+        <div class="space-y-6 text-gray-400 leading-relaxed font-light reveal-text opacity-0">
+          <p>
+            「素晴らしいデザインができたのに、実装リソースが足りない」<br />
+            「こだわりを共有できるエンジニアパートナーが欲しい」
+          </p>
+          <p>
+            QROGRAM（クログラム）は、デザイナーや制作会社のための<span class="text-white"
+              >実装特化型パートナー</span
+            >です。 あなたの描いた世界観を大切に守りながら、モダンなコードへと変換します。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section
+      id="service"
+      class="py-32 px-4 relative z-10 bg-gradient-to-b from-transparent to-black/90"
+    >
+      <div class="max-w-4xl mx-auto text-center mb-16">
+        <span class="text-blue-400 text-xs tracking-widest font-bold block mb-4"
+          >ONE SIMPLE PLAN</span
+        >
+        <h2 class="text-4xl md:text-5xl mb-6">MONTHLY CODING PARTNER</h2>
+        <p class="text-gray-400">
+          複雑なオプションはありません。<br />
+          「目に見える部分」の実装に特化することで、デザインの魅力を最大限に引き出します。
+        </p>
+      </div>
+
+      <div
+        class="max-w-3xl mx-auto glass-card p-8 md:p-16 rounded-2xl relative overflow-hidden plan-card opacity-0 translate-y-10"
+      >
+        <div
+          class="absolute -top-40 -right-40 w-80 h-80 bg-blue-600/20 rounded-full blur-3xl pointer-events-none"
+        ></div>
+
+        <div
+          class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 border-b border-white/10 pb-8"
+        >
+          <div>
+            <h3 class="text-3xl md:text-4xl mb-2">STANDARD</h3>
+            <p class="text-xs text-gray-400 tracking-widest">コーディング・実装代行</p>
+          </div>
+          <div class="mt-6 md:mt-0 text-right">
+            <div class="text-4xl md:text-5xl font-display">
+              ¥250,000〜<span class="text-sm text-gray-500 font-sans ml-2">/ mo</span>
+            </div>
+            <p class="text-xs text-gray-500 mt-1">最低契約期間: 1ヶ月〜</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6 text-sm mb-12">
+          <ul class="space-y-4 text-gray-300">
+            <li class="flex items-center">
+              <span class="text-blue-500 mr-3">✓</span><strong>Faithful Implementation</strong
+              ><br /><span class="text-xs text-gray-500 ml-6">デザインの意図を汲み取った実装</span>
+            </li>
+            <li class="flex items-center">
+              <span class="text-blue-500 mr-3">✓</span><strong>Responsive</strong><br /><span
+                class="text-xs text-gray-500 ml-6"
+                >PC / SP / Tablet 完全対応</span
+              >
+            </li>
+            <li class="flex items-center">
+              <span class="text-blue-500 mr-3">✓</span><strong>Standard Stack</strong><br /><span
+                class="text-xs text-gray-500 ml-6"
+                >HTML / CSS / JavaScript</span
+              >
+            </li>
+          </ul>
+          <ul class="space-y-4 text-gray-300">
+            <li class="flex items-center">
+              <span class="text-blue-500 mr-3">✓</span><strong>Clean Code</strong><br /><span
+                class="text-xs text-gray-500 ml-6"
+                >保守性の高いコンポーネント設計</span
+              >
+            </li>
+
+            <li class="flex items-center text-gray-500">
+              <span class="mr-3 text-gray-600">●</span>
+              <strong>React Implementation</strong>
+              <span class="badge-option">OPTION</span>
+              <br /><span class="text-xs text-gray-600 ml-6">※React / Vue 等のFW対応</span>
+            </li>
+
+            <li class="flex items-center text-gray-500">
+              <span class="mr-3 text-gray-600">●</span>
+              <strong>Advanced Animation</strong>
+              <span class="badge-option">OPTION</span>
+              <br /><span class="text-xs text-gray-600 ml-6">※高度な演出は別途ご相談</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="text-center">
+          <a
+            href="mailto:qurogram.000@gmail.com"
+            class="inline-block w-full md:w-auto px-12 py-4 bg-white text-black font-bold tracking-widest rounded hover:bg-gray-200 transition-all transform hover:scale-105"
+          >
+            START PARTNERSHIP
+          </a>
+          <p class="text-xs text-gray-600 mt-4">※ デザイン制作、CMS構築は含まれません。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-24 px-6 relative z-10 border-t border-white/5">
+      <div class="max-w-5xl mx-auto text-center">
+        <p class="text-gray-600 text-xs tracking-[0.3em] uppercase font-bold mb-10">
+          Trusted Partners
+        </p>
+
+        <ul
+          class="grid grid-cols-2 md:grid-cols-4 gap-y-8 gap-x-4 text-gray-500 text-sm font-medium tracking-wider"
+        >
+          <li>NTT株式会社</li>
+          <li>株式会社CAMPFIRE</li>
+          <li>BASE株式会社</li>
+          <li>株式会社富士山マガジンサービス</li>
+          <li>PAY 株式会社</li>
+          <li class="transition-colors cursor-default opacity-50">and more...</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="contact" class="py-40 px-6 text-center relative z-10">
+      <p class="text-blue-500 tracking-widest text-xs font-bold mb-6">GET STARTED</p>
+      <h2 class="text-4xl md:text-7xl font-display mb-12 leading-tight">
+        READY TO<br />IMPLEMENT?
+      </h2>
+
+      <div class="inline-block relative group cursor-pointer">
+        <a
+          href="mailto:qurogram.000@gmail.com"
+          class="text-xl md:text-3xl font-light hover:text-blue-300 transition-colors"
+        >
+          qurogram.000@gmail.com
+        </a>
+        <div
+          class="absolute -bottom-2 left-0 w-full h-px bg-gray-800 group-hover:bg-blue-300 transition-colors"
+        ></div>
+      </div>
+
+      <footer
+        class="mt-32 border-t border-white/10 pt-8 flex justify-center text-gray-600 text-xs tracking-widest"
+      >
+        <span>© 2025 QROGRAM. ALL RIGHTS RESERVED.</span>
+      </footer>
+    </section>
+
+    <script>
+      // --- THREE.JS (BACKGROUND) ---
+      const initThreeJS = () => {
+        const container = document.getElementById('canvas-container')
+        const scene = new THREE.Scene()
+        const camera = new THREE.PerspectiveCamera(
+          75,
+          window.innerWidth / window.innerHeight,
+          0.1,
+          1000
+        )
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true })
+
+        renderer.setSize(window.innerWidth, window.innerHeight)
+        container.appendChild(renderer.domElement)
+
+        // Particles
+        const geometry = new THREE.BufferGeometry()
+        const count = 1500
+        const posArray = new Float32Array(count * 3)
+
+        for (let i = 0; i < count * 3; i++) {
+          posArray[i] = (Math.random() - 0.5) * 20
+        }
+        geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3))
+
+        const material = new THREE.PointsMaterial({
+          size: 0.03,
+          color: 0x555555,
+          transparent: true,
+          opacity: 0.8,
+        })
+
+        const particlesMesh = new THREE.Points(geometry, material)
+        scene.add(particlesMesh)
+        camera.position.z = 5
+
+        // Mouse
+        let mouseX = 0
+        let mouseY = 0
+        document.addEventListener('mousemove', (e) => {
+          mouseX = e.clientX / window.innerWidth - 0.5
+          mouseY = e.clientY / window.innerHeight - 0.5
+        })
+
+        const animate = () => {
+          requestAnimationFrame(animate)
+          particlesMesh.rotation.y += 0.0005
+          particlesMesh.rotation.x += 0.0005
+          // Gentle mouse follow
+          particlesMesh.rotation.x += mouseY * 0.02
+          particlesMesh.rotation.y += mouseX * 0.02
+          renderer.render(scene, camera)
+        }
+        animate()
+
+        window.addEventListener('resize', () => {
+          camera.aspect = window.innerWidth / window.innerHeight
+          camera.updateProjectionMatrix()
+          renderer.setSize(window.innerWidth, window.innerHeight)
+        })
+      }
+
+      // --- GSAP (ANIMATION) ---
+      const initGSAP = () => {
+        gsap.registerPlugin(ScrollTrigger)
+
+        // Hero Reveal
+        const tl = gsap.timeline()
+        tl.to('.hero-sub', { y: 0, opacity: 1, duration: 1, delay: 0.5 })
+          .to('.hero-title', { y: 0, opacity: 1, duration: 1.2, ease: 'power3.out' }, '-=0.5')
+          .to('.hero-text', { y: 0, opacity: 1, duration: 1 }, '-=0.8')
+          .to('.hero-btn', { y: 0, opacity: 1, duration: 1 }, '-=0.8')
+
+        // Text Reveal
+        gsap.utils.toArray('.reveal-text').forEach((el) => {
+          gsap.to(el, {
+            scrollTrigger: { trigger: el, start: 'top 85%' },
+            y: 0,
+            opacity: 1,
+            duration: 1.2,
+            ease: 'power3.out',
+          })
+        })
+
+        // Plan Card Reveal
+        gsap.to('.plan-card', {
+          scrollTrigger: { trigger: '#service', start: 'top 70%' },
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          ease: 'power3.out',
+        })
+      }
+
+      window.addEventListener('DOMContentLoaded', () => {
+        initThreeJS()
+        initGSAP()
+      })
+    </script>
+  </body>
+</html>
