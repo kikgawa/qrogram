@@ -99,6 +99,11 @@
         border-color: #3b82f6;
         background: rgba(0, 0, 0, 0.5);
       }
+      .field-note {
+        color: #6b7280;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+      }
       html {
         scroll-behavior: smooth;
       }
@@ -147,14 +152,14 @@
           class="hero-text text-gray-400 text-sm md:text-lg max-w-xl leading-relaxed mb-12 opacity-0 translate-y-10"
         >
           会社サイト・採用ページ・問い合わせ導線の改善まで。<br />
-          ご連絡から24時間以内に返信し、要件に合わせて最適な構成で制作します。
+          まだ要件が固まっていない段階でも、24時間以内に返信して整理から一緒に進めます。
         </p>
         <div class="hero-btn opacity-0 translate-y-10">
           <a
             href="#contact"
             class="inline-flex items-center px-10 py-4 font-display tracking-widest text-black bg-white rounded-full hover:bg-gray-200 transition-transform hover:scale-105"
           >
-            サイト制作を相談する
+            無料で相談する
           </a>
         </div>
       </div>
@@ -390,7 +395,7 @@
           <h2 class="text-3xl md:text-5xl font-display leading-tight mb-4">サイト制作のご相談</h2>
           <p class="text-gray-400 text-sm">
             ホームページ制作・リニューアル、採用ページ、LP制作のご相談フォームです。
-            案件概要をいただければ24時間以内に返信します。
+            ざっくりした内容でも大丈夫です。まずは24時間以内に返信します。
           </p>
         </div>
 
@@ -399,9 +404,11 @@
           method="post"
           class="glass-card p-8 md:p-12 rounded-2xl space-y-6"
         >
+          <input type="hidden" name="source" value="qrogram.com contact form" />
+
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="space-y-2">
-              <label class="block text-xs text-gray-400 tracking-widest">NAME</label>
+              <label class="block text-xs text-gray-400 tracking-widest">NAME <span class="text-blue-400">必須</span></label>
               <input
                 type="text"
                 name="name"
@@ -411,7 +418,7 @@
               />
             </div>
             <div class="space-y-2">
-              <label class="block text-xs text-gray-400 tracking-widest">EMAIL</label>
+              <label class="block text-xs text-gray-400 tracking-widest">EMAIL <span class="text-blue-400">必須</span></label>
               <input
                 type="email"
                 name="email"
@@ -423,24 +430,26 @@
           </div>
 
           <div class="space-y-2">
-            <label class="block text-xs text-gray-400 tracking-widest">PLAN</label>
-            <select name="plan" class="w-full p-3 rounded text-sm text-gray-300" required>
-              <option value="Business Website">BUSINESS WEBSITE (¥150,000〜)</option>
+            <label class="block text-xs text-gray-400 tracking-widest">相談したい内容</label>
+            <select name="plan" class="w-full p-3 rounded text-sm text-gray-300">
+              <option value="Not decided yet">まだ決まっていない・まず相談したい</option>
+              <option value="Business Website">会社サイト / ホームページ制作</option>
               <option value="LP Sprint">LP SPRINT (¥50,000〜 / 5営業日)</option>
               <option value="React SPA">REACT SPA (開発相談)</option>
               <option value="Other">その他のお問い合わせ</option>
             </select>
+            <p class="field-note">未定のままで送信できます。</p>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="space-y-2">
-              <label class="block text-xs text-gray-400 tracking-widest">DESIRED LAUNCH DATE</label>
+              <label class="block text-xs text-gray-400 tracking-widest">希望公開日</label>
               <input type="date" name="launch_date" class="w-full p-3 rounded text-sm" />
             </div>
             <div class="space-y-2">
-              <label class="block text-xs text-gray-400 tracking-widest">DESIGN DATA</label>
-              <select name="design_data" class="w-full p-3 rounded text-sm text-gray-300" required>
-                <option value="">選択してください</option>
+              <label class="block text-xs text-gray-400 tracking-widest">デザインデータ</label>
+              <select name="design_data" class="w-full p-3 rounded text-sm text-gray-300">
+                <option value="Not decided yet">未定・これから相談したい</option>
                 <option value="Design data ready">デザインデータあり（Figma / XD / PDF など）</option>
                 <option value="Image / PDF only">画像・PDFのみ</option>
                 <option value="Need design support">これから準備したい（要相談）</option>
@@ -449,23 +458,23 @@
           </div>
 
           <div class="space-y-2">
-            <label class="block text-xs text-gray-400 tracking-widest">BUDGET RANGE</label>
-            <select name="budget_range" class="w-full p-3 rounded text-sm text-gray-300" required>
-              <option value="">選択してください</option>
+            <label class="block text-xs text-gray-400 tracking-widest">予算感</label>
+            <select name="budget_range" class="w-full p-3 rounded text-sm text-gray-300">
+              <option value="Not decided yet">まだ未定（見積もり希望）</option>
               <option value="50,000 - 120,000">¥50,000 - ¥120,000</option>
               <option value="120,000 - 200,000">¥120,000 - ¥200,000</option>
               <option value="200,000+">¥200,000以上</option>
-              <option value="Need estimation">まだ未定（見積もり希望）</option>
             </select>
+            <p class="field-note">予算が固まっていなくても問題ありません。</p>
           </div>
 
           <div class="space-y-2">
-            <label class="block text-xs text-gray-400 tracking-widest">MESSAGE</label>
+            <label class="block text-xs text-gray-400 tracking-widest">MESSAGE <span class="text-blue-400">必須</span></label>
             <textarea
               name="message"
               rows="5"
               required
-              placeholder="案件の概要、希望公開日、参考サイト、必要機能などをご記入ください"
+              placeholder="例: 会社サイトを作りたい、今のサイトを改善したい、LPだけ相談したい、など"
               class="w-full p-3 rounded text-sm"
             ></textarea>
           </div>
@@ -474,8 +483,11 @@
             type="submit"
             class="w-full py-4 bg-white text-black font-bold tracking-[0.2em] rounded hover:bg-blue-500 hover:text-white transition-all duration-300 mt-4"
           >
-            相談内容を送信
+            まずは相談してみる
           </button>
+          <p class="text-center text-xs text-gray-500 leading-relaxed">
+            営業日・休日にかかわらず、確認後24時間以内に返信します。
+          </p>
         </form>
 
         <div class="mt-12 text-center text-gray-600 text-[10px] tracking-widest">
