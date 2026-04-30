@@ -3,22 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>QROGRAM | Website Production for Small Businesses</title>
+    <title>QROGRAM | Interactive Website Production</title>
     <meta
       name="description"
-      content="中小企業のホームページ制作・改善パートナー。会社サイト、採用ページ、問い合わせ導線を整理し、信頼につながるサイトを構築します。"
+      content="QROGRAMは、3D表現・インタラクション・問い合わせ導線まで実装するWeb制作パートナーです。会社サイト、LP、WebアプリUIの制作相談を受け付けています。"
     />
     <link rel="icon" type="image/jpeg" href="./i/qrogram_1_1.jpg" />
-
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Oswald:wght@300;400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
-
-    <script src="https://cdn.tailwindcss.com"></script>
-
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+      integrity="sha512-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0qQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"
       integrity="sha512-16esztaSRplJROstbIIdwX3N97V1+pZvV33ABoG1H2OyTttBxEGkTsoIVsiP1iaTtM8b3+hu2kB6pQ4Clr5yug=="
@@ -31,525 +33,1233 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
-      integrity="sha512-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0qQ=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
 
     <style>
       :root {
-        --primary: #ffffff;
-        --secondary: #888888;
-        --accent: #3b82f6;
+        --ink: #f7f4ea;
+        --muted: #9b9b92;
+        --paper: #050506;
+        --line: rgba(247, 244, 234, 0.16);
+        --text: rgba(247, 244, 234, 0.9);
+        --text-soft: rgba(247, 244, 234, 0.78);
+        --cyan: #35d6ff;
+        --lime: #d9ff4a;
+        --pink: #ff4fd8;
+        --amber: #ffb347;
       }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        background: var(--paper);
+      }
+
       body {
-        background-color: #050505;
-        color: var(--primary);
-        font-family: 'Inter', sans-serif;
-        overflow-x: hidden;
+        min-width: 320px;
         margin: 0;
+        overflow-x: hidden;
+        background:
+          linear-gradient(180deg, rgba(5, 5, 6, 0.58), rgba(5, 5, 6, 1) 62%),
+          radial-gradient(circle at 12% 18%, rgba(53, 214, 255, 0.18), transparent 26%),
+          radial-gradient(circle at 88% 10%, rgba(255, 79, 216, 0.14), transparent 28%),
+          #050506;
+        color: var(--ink);
+        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       }
-      h1,
-      h2,
-      h3,
-      .font-display {
-        font-family: 'Oswald', sans-serif;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
+
+      body::before {
+        position: fixed;
+        inset: 0;
+        z-index: 2;
+        pointer-events: none;
+        content: "";
+        background:
+          linear-gradient(90deg, rgba(5, 5, 6, 0.82), rgba(5, 5, 6, 0.42) 42%, rgba(5, 5, 6, 0.7)),
+          linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+        background-size: auto, 64px 64px, 64px 64px;
+        mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.8), transparent 78%);
       }
-      /* Canvas Background */
-      #canvas-container {
+
+      body::after {
+        position: fixed;
+        inset: 0;
+        z-index: 3;
+        pointer-events: none;
+        content: "";
+        background: linear-gradient(rgba(255, 255, 255, 0.035) 50%, transparent 50%);
+        background-size: 100% 4px;
+        mix-blend-mode: overlay;
+        opacity: 0.18;
+      }
+
+      ::selection {
+        color: #050506;
+        background: var(--lime);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+
+      #scene {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0.82;
+      }
+
+      .grain {
+        position: fixed;
+        inset: -30%;
+        z-index: 1;
+        pointer-events: none;
+        background-image:
+          repeating-radial-gradient(circle at 0 0, rgba(255, 255, 255, 0.11) 0 1px, transparent 1px 3px);
+        opacity: 0.055;
+        transform: rotate(3deg);
+      }
+
+      .site-shell {
+        position: relative;
+        z-index: 4;
+      }
+
+      .nav {
         position: fixed;
         top: 0;
         left: 0;
+        z-index: 20;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         width: 100%;
-        height: 100vh;
-        z-index: -1;
-        opacity: 0.5;
-        pointer-events: none;
+        padding: 22px clamp(18px, 4vw, 56px);
+        color: var(--ink);
+        mix-blend-mode: difference;
       }
-      /* Glass Effect */
-      .glass-card {
-        background: rgba(20, 20, 20, 0.4);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-      }
-      .glass-card:hover {
-        transform: translateY(-5px);
-        border-color: rgba(255, 255, 255, 0.2);
-        background: rgba(30, 30, 30, 0.6);
-        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
-      }
-      /* Form Inputs */
-      input,
-      textarea,
-      select {
-        background: rgba(0, 0, 0, 0.3);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        color: white;
-        transition: all 0.3s ease;
-      }
-      input:focus,
-      textarea:focus,
-      select:focus {
-        outline: none;
-        border-color: #3b82f6;
-        background: rgba(0, 0, 0, 0.5);
-      }
-      .field-note {
-        color: #6b7280;
-        font-size: 11px;
+
+      .brand {
+        display: grid;
+        gap: 2px;
+        font-family: "Space Grotesk", Inter, sans-serif;
+        font-size: 22px;
+        font-weight: 700;
         letter-spacing: 0.08em;
+        line-height: 1;
       }
-      html {
-        scroll-behavior: smooth;
+
+      .brand small {
+        color: rgba(247, 244, 234, 0.58);
+        font-family: Inter, sans-serif;
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 0.38em;
       }
-      ::selection {
-        background: #fff;
-        color: #000;
+
+      .nav-links {
+        display: flex;
+        gap: clamp(18px, 3vw, 44px);
+        align-items: center;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .nav-links a {
+        opacity: 0.72;
+        transition: opacity 180ms ease;
+      }
+
+      .nav-links a:hover {
+        opacity: 1;
+      }
+
+      .hero {
+        display: grid;
+        min-height: 100svh;
+        padding: 118px clamp(18px, 5vw, 72px) 36px;
+        align-items: end;
+      }
+
+      .hero-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.6fr);
+        gap: clamp(32px, 6vw, 96px);
+        width: 100%;
+        align-items: end;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        margin: 0 0 24px;
+        color: var(--lime);
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+      }
+
+      .eyebrow::before {
+        display: block;
+        width: 36px;
+        height: 1px;
+        content: "";
+        background: currentColor;
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        font-family: "Space Grotesk", Inter, sans-serif;
+        font-weight: 700;
+        letter-spacing: 0;
+      }
+
+      .hero h1 {
+        max-width: 1120px;
+        font-size: clamp(58px, 12.6vw, 190px);
+        line-height: 0.78;
+        text-transform: uppercase;
+      }
+
+      .hero h1 span {
+        display: block;
+        color: transparent;
+        -webkit-text-stroke: 1px rgba(247, 244, 234, 0.78);
+        text-shadow: 0 0 32px rgba(53, 214, 255, 0.18);
+      }
+
+      .hero-copy {
+        max-width: 520px;
+        margin: 28px 0 0;
+        padding: 14px 16px;
+        border-left: 2px solid rgba(217, 255, 74, 0.7);
+        background: linear-gradient(90deg, rgba(5, 5, 6, 0.74), rgba(5, 5, 6, 0.22));
+        color: var(--text);
+        font-size: clamp(16px, 1.6vw, 18px);
+        font-weight: 600;
+        line-height: 2;
+        text-shadow: 0 2px 18px rgba(0, 0, 0, 0.88);
+      }
+
+      .hero-panel {
+        align-self: stretch;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        gap: 18px;
+        min-height: 360px;
+        padding-bottom: 18px;
+      }
+
+      .metric-strip {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        background: rgba(5, 5, 6, 0.58);
+        backdrop-filter: blur(10px);
+      }
+
+      .metric {
+        min-width: 0;
+        padding: 18px 14px;
+        border-right: 1px solid var(--line);
+      }
+
+      .metric:last-child {
+        border-right: 0;
+      }
+
+      .metric b {
+        display: block;
+        color: var(--ink);
+        font-family: "Space Grotesk", Inter, sans-serif;
+        font-size: clamp(22px, 3vw, 36px);
+        line-height: 1;
+      }
+
+      .metric span {
+        display: block;
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 34px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 52px;
+        padding: 0 22px;
+        border: 1px solid rgba(247, 244, 234, 0.24);
+        border-radius: 999px;
+        color: var(--ink);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        transition:
+          transform 180ms ease,
+          border-color 180ms ease,
+          background 180ms ease,
+          color 180ms ease;
+      }
+
+      .button:hover {
+        transform: translateY(-2px);
+        border-color: rgba(247, 244, 234, 0.65);
+      }
+
+      .button.primary {
+        border-color: transparent;
+        background: var(--ink);
+        color: #050506;
+      }
+
+      .button.primary:hover {
+        background: var(--lime);
+      }
+
+      .ticker {
+        display: flex;
+        width: 100%;
+        overflow: hidden;
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        background: rgba(5, 5, 6, 0.44);
+      }
+
+      .ticker-track {
+        display: flex;
+        min-width: 100%;
+        gap: 38px;
+        padding: 14px 0;
+        animation: ticker 34s linear infinite;
+      }
+
+      .ticker span {
+        flex: 0 0 auto;
+        color: rgba(247, 244, 234, 0.68);
+        font-size: 11px;
+        font-weight: 900;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+      }
+
+      @keyframes ticker {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-100%);
+        }
+      }
+
+      .section {
+        padding: clamp(92px, 14vw, 180px) clamp(18px, 5vw, 72px);
+      }
+
+      .section-head {
+        display: grid;
+        grid-template-columns: minmax(0, 0.8fr) minmax(280px, 0.42fr);
+        gap: clamp(28px, 7vw, 96px);
+        align-items: end;
+        margin-bottom: clamp(34px, 7vw, 88px);
+      }
+
+      .section-kicker {
+        margin: 0 0 18px;
+        color: var(--cyan);
+        font-size: 11px;
+        font-weight: 900;
+        letter-spacing: 0.26em;
+        text-transform: uppercase;
+      }
+
+      .section-title {
+        max-width: 980px;
+        font-size: clamp(40px, 8vw, 116px);
+        line-height: 0.88;
+        text-transform: uppercase;
+      }
+
+      .section-copy {
+        margin: 0;
+        color: var(--text-soft);
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 2.05;
+      }
+
+      .capability-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        border-top: 1px solid var(--line);
+        border-left: 1px solid var(--line);
+      }
+
+      .capability {
+        min-height: 292px;
+        padding: clamp(22px, 3vw, 34px);
+        border-right: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        background: rgba(9, 10, 11, 0.82);
+        backdrop-filter: blur(12px);
+      }
+
+      .capability:nth-child(2) {
+        background: linear-gradient(180deg, rgba(53, 214, 255, 0.08), rgba(9, 10, 11, 0.9));
+      }
+
+      .capability:nth-child(3) {
+        background: linear-gradient(180deg, rgba(255, 79, 216, 0.07), rgba(9, 10, 11, 0.9));
+      }
+
+      .capability:nth-child(4) {
+        background: linear-gradient(180deg, rgba(217, 255, 74, 0.06), rgba(9, 10, 11, 0.9));
+      }
+
+      .capability b {
+        display: block;
+        margin-bottom: 46px;
+        color: rgba(247, 244, 234, 0.36);
+        font-family: "Space Grotesk", Inter, sans-serif;
+        font-size: 13px;
+        letter-spacing: 0.16em;
+      }
+
+      .capability h3 {
+        margin-bottom: 18px;
+        font-size: clamp(22px, 3vw, 34px);
+        line-height: 1;
+        text-transform: uppercase;
+      }
+
+      .capability p {
+        margin: 0;
+        color: var(--text-soft);
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 2;
+      }
+
+      .work-band {
+        display: grid;
+        grid-template-columns: minmax(280px, 0.7fr) minmax(0, 1fr);
+        gap: 1px;
+        background: var(--line);
+        border: 1px solid var(--line);
+      }
+
+      .work-lead,
+      .work-item {
+        background: rgba(8, 8, 9, 0.9);
+        backdrop-filter: blur(12px);
+      }
+
+      .work-lead {
+        padding: clamp(28px, 5vw, 56px);
+      }
+
+      .work-lead h2 {
+        font-size: clamp(34px, 5vw, 72px);
+        line-height: 0.92;
+        text-transform: uppercase;
+      }
+
+      .work-lead p {
+        margin: 22px 0 0;
+        color: var(--text-soft);
+        font-weight: 500;
+        line-height: 2;
+      }
+
+      .work-list {
+        display: grid;
+      }
+
+      .work-item {
+        display: grid;
+        grid-template-columns: 120px minmax(0, 1fr) minmax(160px, 0.34fr);
+        gap: 22px;
+        padding: clamp(24px, 4vw, 40px);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .work-item:last-child {
+        border-bottom: 0;
+      }
+
+      .work-item time {
+        color: var(--lime);
+        font-family: "Space Grotesk", Inter, sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .work-item h3 {
+        font-size: clamp(22px, 3vw, 36px);
+        line-height: 1;
+        text-transform: uppercase;
+      }
+
+      .work-item p {
+        margin: 10px 0 0;
+        color: var(--text-soft);
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 1.95;
+      }
+
+      .work-item strong {
+        color: rgba(247, 244, 234, 0.88);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .plans {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1px;
+        background: var(--line);
+        border: 1px solid var(--line);
+      }
+
+      .plan {
+        display: flex;
+        flex-direction: column;
+        min-height: 460px;
+        padding: clamp(24px, 4vw, 38px);
+        background: rgba(8, 8, 9, 0.92);
+        backdrop-filter: blur(12px);
+      }
+
+      .plan.featured {
+        background:
+          linear-gradient(180deg, rgba(217, 255, 74, 0.08), rgba(5, 5, 6, 0.82) 48%),
+          rgba(8, 8, 9, 0.92);
+      }
+
+      .plan small {
+        color: var(--cyan);
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+      }
+
+      .plan h3 {
+        margin: 18px 0 10px;
+        font-size: clamp(30px, 4.2vw, 50px);
+        line-height: 0.9;
+        text-transform: uppercase;
+      }
+
+      .price {
+        margin: 0 0 28px;
+        color: var(--text);
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .plan ul {
+        display: grid;
+        gap: 14px;
+        padding: 0;
+        margin: auto 0 0;
+        list-style: none;
+      }
+
+      .plan li {
+        color: var(--text-soft);
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 1.85;
+      }
+
+      .contact {
+        padding-bottom: 72px;
+      }
+
+      .contact-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 0.78fr) minmax(320px, 0.62fr);
+        gap: clamp(32px, 7vw, 96px);
+        align-items: start;
+      }
+
+      .contact h2 {
+        font-size: clamp(54px, 9vw, 128px);
+        line-height: 0.84;
+        text-transform: uppercase;
+      }
+
+      .contact p {
+        max-width: 620px;
+        color: var(--text-soft);
+        font-weight: 500;
+        line-height: 2.05;
+      }
+
+      form {
+        display: grid;
+        gap: 18px;
+        padding: clamp(24px, 4vw, 40px);
+        border: 1px solid var(--line);
+        background: rgba(8, 8, 9, 0.92);
+        backdrop-filter: blur(18px);
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      label {
+        display: grid;
+        gap: 8px;
+        color: rgba(247, 244, 234, 0.72);
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        min-height: 48px;
+        padding: 13px 14px;
+        border: 1px solid rgba(247, 244, 234, 0.18);
+        border-radius: 0;
+        outline: 0;
+        background: rgba(255, 255, 255, 0.07);
+        color: var(--ink);
+        font-size: 14px;
+        font-weight: 600;
+        transition:
+          border-color 180ms ease,
+          background 180ms ease;
+      }
+
+      textarea {
+        min-height: 150px;
+        resize: vertical;
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        border-color: var(--lime);
+        background: rgba(255, 255, 255, 0.075);
+      }
+
+      option {
+        color: #050506;
+      }
+
+      .submit {
+        min-height: 58px;
+        border: 0;
+        background: var(--ink);
+        color: #050506;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        transition:
+          transform 180ms ease,
+          background 180ms ease;
+      }
+
+      .submit:hover {
+        transform: translateY(-2px);
+        background: var(--lime);
+      }
+
+      .form-note {
+        margin: 0;
+        color: rgba(247, 244, 234, 0.68);
+        font-size: 13px;
+        line-height: 1.8;
+        text-align: center;
+      }
+
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 0 clamp(18px, 5vw, 72px) 34px;
+        color: rgba(247, 244, 234, 0.46);
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+      }
+
+      @media (max-width: 980px) {
+        .hero-layout,
+        .section-head,
+        .work-band,
+        .contact-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-panel {
+          min-height: auto;
+          padding-bottom: 0;
+        }
+
+        .capability-grid,
+        .plans {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .work-item {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 680px) {
+        .nav {
+          align-items: flex-start;
+        }
+
+        .nav-links {
+          display: none;
+        }
+
+        .hero {
+          padding-top: 96px;
+        }
+
+        .hero h1 {
+          font-size: clamp(56px, 19vw, 92px);
+        }
+
+        .metric-strip,
+        .capability-grid,
+        .plans,
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .metric {
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+        }
+
+        .metric:last-child {
+          border-bottom: 0;
+        }
+
+        .capability,
+        .plan {
+          min-height: auto;
+        }
+
+        .footer {
+          flex-direction: column;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
       }
     </style>
   </head>
-  <body class="antialiased">
-    <div id="canvas-container"></div>
 
-    <nav
-      class="fixed w-full z-50 px-6 md:px-12 py-6 flex justify-between items-center mix-blend-difference"
-    >
-      <div class="flex flex-col leading-none select-none cursor-pointer">
-        <span class="font-display text-2xl font-medium tracking-widest">QROGRAM</span>
-        <span class="text-[10px] text-gray-400 tracking-[0.4em] ml-0.5">CODING PARTNER</span>
-      </div>
-      <div class="hidden md:flex space-x-10 text-xs font-medium tracking-widest text-gray-300">
-        <a href="#about" class="hover:text-white transition-colors">ABOUT</a>
-        <a href="#service" class="hover:text-white transition-colors">SERVICE</a>
-        <a href="#contact" class="hover:text-white transition-colors">CONTACT</a>
-      </div>
-    </nav>
+  <body>
+    <div id="scene" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
 
-    <section class="h-screen flex flex-col justify-center items-center text-center px-4 relative">
-      <div class="z-10 flex flex-col items-center max-w-4xl">
-        <div class="overflow-hidden mb-6">
-          <p
-            class="hero-sub text-xs md:text-sm tracking-[0.4em] text-gray-400 uppercase opacity-0 translate-y-10"
-          >
-            SMALL BUSINESS WEBSITE PARTNER
-          </p>
-        </div>
-        <h1
-          class="hero-title text-5xl md:text-7xl lg:text-9xl font-medium leading-[0.9] mb-8 opacity-0 translate-y-20"
-        >
-          BUILD A SITE<br />
-          <span
-            class="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-600"
-            >THAT WINS TRUST.</span
-          >
-        </h1>
-        <p
-          class="hero-text text-gray-400 text-sm md:text-lg max-w-xl leading-relaxed mb-12 opacity-0 translate-y-10"
-        >
-          会社サイト・採用ページ・問い合わせ導線の改善まで。<br />
-          まだ要件が固まっていない段階でも、24時間以内に返信して整理から一緒に進めます。
-        </p>
-        <div class="hero-btn opacity-0 translate-y-10">
-          <a
-            href="#contact"
-            class="inline-flex items-center px-10 py-4 font-display tracking-widest text-black bg-white rounded-full hover:bg-gray-200 transition-transform hover:scale-105"
-          >
-            無料で相談する
-          </a>
-        </div>
-      </div>
-      <div class="absolute bottom-12 opacity-40 animate-pulse flex flex-col items-center">
-        <span class="text-[10px] tracking-widest mb-2">SCROLL</span>
-        <div class="w-px h-12 bg-gradient-to-b from-white to-transparent"></div>
-      </div>
-    </section>
-
-    <section id="about" class="py-32 md:py-48 px-6 md:px-20 relative z-10">
-      <div class="max-w-6xl mx-auto">
-        <div class="mb-20 text-center md:text-left">
-          <span class="text-blue-500 text-xs tracking-[0.3em] font-bold block mb-4">WHO I AM</span>
-          <h2 class="text-4xl md:text-6xl leading-tight font-display mb-8">
-            BEYOND CODING.<br />
-            <span class="text-gray-500">BUILDING VALUE.</span>
-          </h2>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-sm leading-relaxed text-gray-400">
-          <div class="space-y-4">
-            <h3
-              class="text-white text-lg font-display tracking-widest border-b border-blue-500/30 pb-2 inline-block"
-            >
-              01. EXPERIENCE
-            </h3>
-            <p>
-              2007年のキャリアスタート以来、15年以上にわたりWeb業界の最前線で実装に従事してきました。
-              静的なWebサイトから、大規模なシステム開発、WebアプリケーションのUI設計まで、多岐にわたるプロジェクトを経験しています。
-            </p>
-            <p>
-              Webのトレンドが移り変わる中で培った「変わらない技術の基礎」と「最新のトレンド」の両方を理解していることが強みです。
-            </p>
-          </div>
-
-          <div class="space-y-4">
-            <h3
-              class="text-white text-lg font-display tracking-widest border-b border-blue-500/30 pb-2 inline-block"
-            >
-              02. PERSPECTIVE
-            </h3>
-            <p>
-              約8年間の会社経営経験があります。
-              単にコードを書くだけでなく、クライアントとの要件調整、スケジュール管理、品質管理など、プロジェクト全体を俯瞰したハンドリングが可能です
-            </p>
-            <p>
-              「技術的に可能か」だけでなく、「事業価値やユーザー価値に貢献するか」という視点での意思決定と提案をお約束します
-            </p>
-          </div>
-
-          <div class="space-y-4">
-            <h3
-              class="text-white text-lg font-display tracking-widest border-b border-blue-500/30 pb-2 inline-block"
-            >
-              03. TECHNOLOGY
-            </h3>
-            <p>
-              デザインの再現性を担保するマークアップ技術を土台としつつ、近年は React / TypeScript
-              を中心としたアプリケーション開発に注力しています
-            </p>
-            <p>
-              複雑なフォーム要件の実装や、レガシー環境からのモダンなシステムへの移行（リプレイス）など、難易度の高いエンジニアリング領域も安心してお任せください
-            </p>
-          </div>
-        </div>
-
-        <div class="mt-20 pt-10 border-t border-white/10">
-          <h4 class="text-xs text-gray-500 tracking-[0.2em] mb-6">CASE SNAPSHOTS</h4>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-            <article class="glass-card p-5 rounded-xl space-y-3">
-              <p class="text-blue-400 tracking-widest">CHALLENGE</p>
-              <p class="text-gray-300">広告入稿画面が旧実装で保守性が低く、機能追加のリードタイムが長期化。</p>
-              <p class="text-blue-400 tracking-widest">ACTION</p>
-              <p class="text-gray-300">React移行とコンポーネント再設計で、機能追加しやすい構成に刷新。</p>
-              <p class="text-blue-400 tracking-widest">RESULT</p>
-              <p class="text-gray-200">継続開発フェーズへ移行し、運用しながら改修を回せる状態を実現。</p>
-            </article>
-            <article class="glass-card p-5 rounded-xl space-y-3">
-              <p class="text-blue-400 tracking-widest">CHALLENGE</p>
-              <p class="text-gray-300">
-                企業サイト刷新で、更新性と表示パフォーマンスを両立する必要があった。
-              </p>
-              <p class="text-blue-400 tracking-widest">ACTION</p>
-              <p class="text-gray-300">
-                静的サイトジェネレータ導入と共通パーツ設計で、制作・運用フローを標準化。
-              </p>
-              <p class="text-blue-400 tracking-widest">RESULT</p>
-              <p class="text-gray-200">公開後の更新工数を抑えながら、安定した表示品質を維持。</p>
-            </article>
-            <article class="glass-card p-5 rounded-xl space-y-3">
-              <p class="text-blue-400 tracking-widest">CHALLENGE</p>
-              <p class="text-gray-300">集客LPで、デザイン再現とフォーム導線の両立が必要だった。</p>
-              <p class="text-blue-400 tracking-widest">ACTION</p>
-              <p class="text-gray-300">アニメーションを軽量化しつつ、CV導線を意識した実装に最適化。</p>
-              <p class="text-blue-400 tracking-widest">RESULT</p>
-              <p class="text-gray-200">意図した見せ方を維持しながら、問い合わせ導線を実運用レベルで構築。</p>
-            </article>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section
-      id="service"
-      class="py-32 px-4 relative z-10 bg-gradient-to-b from-transparent to-black/90"
-    >
-      <div class="max-w-4xl mx-auto text-center mb-16">
-        <span class="text-blue-400 text-xs tracking-widest font-bold block mb-4">SERVICE MENU</span>
-        <h2 class="text-4xl md:text-5xl mb-6 font-display">BUSINESS WEBSITE FIRST</h2>
-        <p class="text-gray-400">
-          中小企業向けのホームページ制作・リニューアルを中心に、
-          採用や問い合わせにつながる導線改善まで対応します。
-        </p>
-      </div>
-
-      <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div
-          class="glass-card p-8 rounded-2xl flex flex-col plan-card opacity-0 translate-y-10 border-blue-500/50 bg-gradient-to-b from-blue-900/20 to-transparent"
-        >
-          <div class="mb-4">
-            <p class="text-[10px] text-blue-300 tracking-[0.3em] mb-2">RECOMMENDED</p>
-            <h3 class="text-2xl font-display text-white">BUSINESS WEBSITE</h3>
-            <p class="text-[10px] text-gray-500 tracking-widest mt-1">
-              会社サイト新規制作・リニューアル
-            </p>
-          </div>
-          <div class="mb-6 border-b border-white/10 pb-6">
-            <div class="text-3xl font-display">
-              ¥150,000<span class="text-sm text-gray-500 ml-1">〜</span>
-            </div>
-            <p class="text-[10px] text-gray-500 mt-2">納期目安: 10営業日〜 / 着手金: 50%</p>
-          </div>
-          <ul class="space-y-3 text-xs text-gray-300 flex-grow">
-            <li class="flex items-start">
-              <span class="text-blue-500 mr-2">✓</span>トップ + 下層ページの情報設計と実装
-            </li>
-            <li class="flex items-start">
-              <span class="text-blue-500 mr-2">✓</span>レスポンシブ完全対応（PC / Tablet / SP）
-            </li>
-            <li class="flex items-start">
-              <span class="text-blue-500 mr-2">✓</span>問い合わせ・採用・予約導線の整理
-            </li>
-            <li class="flex items-start">
-              <span class="text-blue-500 mr-2">✓</span>フォーム実装と更新しやすい共通設計
-            </li>
-            <li class="flex items-start">
-              <span class="text-blue-500 mr-2">✓</span>デザイン支援（構成・ワイヤー提案）はオプション対応
-            </li>
-          </ul>
-        </div>
-
-        <div
-          class="glass-card p-8 rounded-2xl flex flex-col plan-card opacity-0 translate-y-10 border-blue-500/30"
-        >
-          <div class="mb-4">
-            <h3 class="text-2xl font-display text-blue-100">LP SPRINT</h3>
-            <p class="text-[10px] text-gray-500 tracking-widest mt-1">固定価格・固定納期の単発LP実装</p>
-          </div>
-          <div class="mb-6 border-b border-white/10 pb-6">
-            <div class="text-3xl font-display text-blue-100">
-              ¥50,000<span class="text-sm text-gray-500 ml-1">〜</span>
-            </div>
-            <p class="text-[10px] text-gray-500 mt-2">納期: 5営業日</p>
-          </div>
-          <ul class="space-y-3 text-xs text-gray-300 flex-grow">
-            <li class="flex items-start">
-              <span class="text-blue-400 mr-2">✓</span>1ページ実装（デザインデータ忠実再現）
-            </li>
-            <li class="flex items-start">
-              <span class="text-blue-400 mr-2">✓</span>レスポンシブ完全対応（PC / Tablet / SP）
-            </li>
-            <li class="flex items-start">
-              <span class="text-blue-400 mr-2">✓</span>修正2回まで込み
-            </li>
-            <li class="flex items-start">
-              <span class="text-blue-500 mr-2">✓</span>軽量アニメーション・フォーム実装対応
-            </li>
-            <li class="flex items-start">
-              <span class="text-blue-500 mr-2">✓</span>公開許可で納品後7日以内の軽微修正を無償対応
-            </li>
-          </ul>
-        </div>
-
-        <div
-          class="glass-card p-8 rounded-2xl flex flex-col plan-card opacity-0 translate-y-10 bg-gradient-to-b from-blue-900/10 to-transparent"
-        >
-          <div class="mb-4">
-            <h3 class="text-2xl font-display text-blue-200">REACT SPA</h3>
-            <p class="text-[10px] text-gray-500 tracking-widest mt-1">
-              Webアプリ・機能開発（スポット）
-            </p>
-          </div>
-          <div class="mb-6 border-b border-white/10 pb-6">
-            <div class="text-3xl font-display text-blue-200">
-              PROJECT<span class="text-sm text-gray-500 ml-1">BASIS</span>
-            </div>
-            <p class="text-[10px] text-gray-500 mt-2">目安: ¥250,000〜 / 案件 / 着手金: 50%</p>
-          </div>
-          <ul class="space-y-3 text-xs text-gray-300 flex-grow">
-            <li class="flex items-start">
-              <span class="text-purple-400 mr-2">★</span><strong>React</strong> 環境構築
-            </li>
-            <li class="flex items-start">
-              <span class="text-purple-400 mr-2">★</span>SPA (Single Page Application)
-            </li>
-            <li class="flex items-start">
-              <span class="text-purple-400 mr-2">★</span>ヘッドレスCMS連携 / API接続
-            </li>
-            <li class="flex items-start">
-              <span class="text-purple-400 mr-2">★</span>状態管理・複雑なUIロジック
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="text-center mt-12">
-        <a
-          href="#contact"
-          class="inline-block px-12 py-4 bg-white text-black font-bold tracking-widest rounded hover:bg-gray-200 transition-all transform hover:scale-105 text-sm"
-        >
-          サイト制作を相談する
+    <main class="site-shell">
+      <nav class="nav" aria-label="Primary">
+        <a class="brand" href="#top" aria-label="QROGRAM">
+          QROGRAM
+          <small>INTERACTIVE BUILD</small>
         </a>
-        <p class="text-xs text-gray-600 mt-4">
-          ※ デザイン制作費は含まれません。情報設計・デザイン支援・Figma納品は要件に応じて別見積もりです。
-        </p>
-      </div>
-    </section>
+        <div class="nav-links">
+          <a href="#craft">Craft</a>
+          <a href="#work">Work</a>
+          <a href="#plans">Plans</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </nav>
 
-    <section id="contact" class="py-32 px-6 relative z-10 border-t border-white/5">
-      <div class="max-w-2xl mx-auto">
-        <div class="text-center mb-12">
-          <p class="text-blue-500 tracking-widest text-xs font-bold mb-4">CONTACT</p>
-          <h2 class="text-3xl md:text-5xl font-display leading-tight mb-4">サイト制作のご相談</h2>
-          <p class="text-gray-400 text-sm">
-            ホームページ制作・リニューアル、採用ページ、LP制作のご相談フォームです。
-            ざっくりした内容でも大丈夫です。まずは24時間以内に返信します。
+      <section id="top" class="hero">
+        <div class="hero-layout">
+          <div>
+            <p class="eyebrow reveal">Website Production / Interface Engineering</p>
+            <h1 class="reveal">
+              Build
+              <span>the Signal</span>
+            </h1>
+            <p class="hero-copy reveal">
+              会社サイト、LP、WebアプリUIまで。見た目の強さと、問い合わせにつながる導線を同じ温度で実装します。
+            </p>
+            <div class="cta-row reveal">
+              <a class="button primary" href="#contact">Start a Project</a>
+              <a class="button" href="#craft">View Craft</a>
+            </div>
+          </div>
+
+          <aside class="hero-panel reveal" aria-label="QROGRAM highlights">
+            <div class="metric-strip">
+              <div class="metric">
+                <b>15+</b>
+                <span>Years</span>
+              </div>
+              <div class="metric">
+                <b>3D</b>
+                <span>Motion</span>
+              </div>
+              <div class="metric">
+                <b>24h</b>
+                <span>Reply</span>
+              </div>
+            </div>
+            <p class="section-copy">
+              デザイン再現、フロントエンド実装、フォーム導線、公開後の改善まで。小さく始めて、ちゃんと届くサイトに仕上げます。
+            </p>
+          </aside>
+        </div>
+      </section>
+
+      <div class="ticker" aria-hidden="true">
+        <div class="ticker-track">
+          <span>Three.js</span>
+          <span>Creative Coding</span>
+          <span>React UI</span>
+          <span>Landing Page</span>
+          <span>Business Website</span>
+          <span>Conversion Flow</span>
+        </div>
+        <div class="ticker-track">
+          <span>Three.js</span>
+          <span>Creative Coding</span>
+          <span>React UI</span>
+          <span>Landing Page</span>
+          <span>Business Website</span>
+          <span>Conversion Flow</span>
+        </div>
+      </div>
+
+      <section id="craft" class="section">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker reveal">Craft Stack</p>
+            <h2 class="section-title reveal">Motion with purpose.</h2>
+          </div>
+          <p class="section-copy reveal">
+            派手さだけで終わらせず、ブランドの記憶、読みやすさ、相談までの動線を同時に設計します。
           </p>
         </div>
 
-        <form
-          action="https://ssgform.com/s/V1TAnOD4NeIi"
-          method="post"
-          class="glass-card p-8 md:p-12 rounded-2xl space-y-6"
-        >
-          <input type="hidden" name="source" value="qrogram.com contact form" />
+        <div class="capability-grid">
+          <article class="capability reveal">
+            <b>01</b>
+            <h3>3D Visual</h3>
+            <p>Three.jsを使ったヒーロー演出、空間的なスクロール体験、軽量なWebGL表現。</p>
+          </article>
+          <article class="capability reveal">
+            <b>02</b>
+            <h3>Frontend</h3>
+            <p>HTML/CSS/JavaScript、React、TypeScriptを軸にした堅実なUI実装。</p>
+          </article>
+          <article class="capability reveal">
+            <b>03</b>
+            <h3>Flow</h3>
+            <p>問い合わせ、採用、予約、資料請求など、行動につながるフォーム導線。</p>
+          </article>
+          <article class="capability reveal">
+            <b>04</b>
+            <h3>Launch</h3>
+            <p>GitHub Pagesや静的ホスティング、運用しやすい構成、公開後の微調整。</p>
+          </article>
+        </div>
+      </section>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="space-y-2">
-              <label class="block text-xs text-gray-400 tracking-widest">NAME <span class="text-blue-400">必須</span></label>
-              <input
-                type="text"
-                name="name"
-                required
-                placeholder="お名前 / 会社名"
-                class="w-full p-3 rounded text-sm"
-              />
-            </div>
-            <div class="space-y-2">
-              <label class="block text-xs text-gray-400 tracking-widest">EMAIL <span class="text-blue-400">必須</span></label>
-              <input
-                type="email"
-                name="email"
-                required
-                placeholder="メールアドレス"
-                class="w-full p-3 rounded text-sm"
-              />
-            </div>
+      <section id="work" class="section">
+        <div class="work-band reveal">
+          <div class="work-lead">
+            <p class="section-kicker">Selected Direction</p>
+            <h2>Sharp, useful, memorable.</h2>
+            <p>
+              事業紹介に必要な信頼感は残しながら、第一印象で「ここは実装が強い」と伝わる方向へ。
+            </p>
+          </div>
+          <div class="work-list">
+            <article class="work-item">
+              <time>01</time>
+              <div>
+                <h3>Company Site</h3>
+                <p>企業情報、採用、問い合わせまでを整理し、ブランドの入口として機能するサイトへ。</p>
+              </div>
+              <strong>From ¥150,000</strong>
+            </article>
+            <article class="work-item">
+              <time>02</time>
+              <div>
+                <h3>LP Sprint</h3>
+                <p>キャンペーン、サービス紹介、広告受け皿に必要な1ページを短納期で実装。</p>
+              </div>
+              <strong>From ¥50,000</strong>
+            </article>
+            <article class="work-item">
+              <time>03</time>
+              <div>
+                <h3>Interactive UI</h3>
+                <p>Reactベースの管理画面、Webアプリ、リッチな表現を含むUI開発。</p>
+              </div>
+              <strong>Project Basis</strong>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="plans" class="section">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker reveal">Service Menu</p>
+            <h2 class="section-title reveal">Pick the launch shape.</h2>
+          </div>
+          <p class="section-copy reveal">
+            要件が固まっていない段階でも相談できます。最初の返信で、必要なページ・素材・概算を整理します。
+          </p>
+        </div>
+
+        <div class="plans">
+          <article class="plan featured reveal">
+            <small>Recommended</small>
+            <h3>Business Website</h3>
+            <p class="price">¥150,000〜 / 10営業日〜</p>
+            <ul>
+              <li>トップ + 下層ページの構成整理</li>
+              <li>レスポンシブ実装</li>
+              <li>問い合わせ導線の設計</li>
+              <li>公開後の軽微修正相談</li>
+            </ul>
+          </article>
+          <article class="plan reveal">
+            <small>Fast Launch</small>
+            <h3>LP Sprint</h3>
+            <p class="price">¥50,000〜 / 5営業日〜</p>
+            <ul>
+              <li>1ページLP実装</li>
+              <li>デザインデータ忠実再現</li>
+              <li>軽量アニメーション</li>
+              <li>フォーム設置対応</li>
+            </ul>
+          </article>
+          <article class="plan reveal">
+            <small>Advanced</small>
+            <h3>React / 3D</h3>
+            <p class="price">案件ごとにお見積もり</p>
+            <ul>
+              <li>React / TypeScript UI</li>
+              <li>Three.js表現</li>
+              <li>API接続 / 状態管理</li>
+              <li>既存画面の改善</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section id="contact" class="section contact">
+        <div class="contact-layout">
+          <div>
+            <p class="section-kicker reveal">Contact</p>
+            <h2 class="reveal">Make it real.</h2>
+            <p class="reveal">
+              まだ「なんとなく変えたい」くらいでも大丈夫です。内容を確認して、24時間以内に返信します。
+            </p>
           </div>
 
-          <div class="space-y-2">
-            <label class="block text-xs text-gray-400 tracking-widest">相談したい内容</label>
-            <select name="plan" class="w-full p-3 rounded text-sm text-gray-300">
-              <option value="Not decided yet">まだ決まっていない・まず相談したい</option>
-              <option value="Business Website">会社サイト / ホームページ制作</option>
-              <option value="LP Sprint">LP SPRINT (¥50,000〜 / 5営業日)</option>
-              <option value="React SPA">REACT SPA (開発相談)</option>
-              <option value="Other">その他のお問い合わせ</option>
-            </select>
-            <p class="field-note">未定のままで送信できます。</p>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="space-y-2">
-              <label class="block text-xs text-gray-400 tracking-widest">希望公開日</label>
-              <input type="date" name="launch_date" class="w-full p-3 rounded text-sm" />
-            </div>
-            <div class="space-y-2">
-              <label class="block text-xs text-gray-400 tracking-widest">デザインデータ</label>
-              <select name="design_data" class="w-full p-3 rounded text-sm text-gray-300">
-                <option value="Not decided yet">未定・これから相談したい</option>
-                <option value="Design data ready">デザインデータあり（Figma / XD / PDF など）</option>
-                <option value="Image / PDF only">画像・PDFのみ</option>
-                <option value="Need design support">これから準備したい（要相談）</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="space-y-2">
-            <label class="block text-xs text-gray-400 tracking-widest">予算感</label>
-            <select name="budget_range" class="w-full p-3 rounded text-sm text-gray-300">
-              <option value="Not decided yet">まだ未定（見積もり希望）</option>
-              <option value="50,000 - 120,000">¥50,000 - ¥120,000</option>
-              <option value="120,000 - 200,000">¥120,000 - ¥200,000</option>
-              <option value="200,000+">¥200,000以上</option>
-            </select>
-            <p class="field-note">予算が固まっていなくても問題ありません。</p>
-          </div>
-
-          <div class="space-y-2">
-            <label class="block text-xs text-gray-400 tracking-widest">MESSAGE <span class="text-blue-400">必須</span></label>
-            <textarea
-              name="message"
-              rows="5"
-              required
-              placeholder="例: 会社サイトを作りたい、今のサイトを改善したい、LPだけ相談したい、など"
-              class="w-full p-3 rounded text-sm"
-            ></textarea>
-          </div>
-
-          <button
-            type="submit"
-            class="w-full py-4 bg-white text-black font-bold tracking-[0.2em] rounded hover:bg-blue-500 hover:text-white transition-all duration-300 mt-4"
+          <form
+            class="reveal"
+            action="https://ssgform.com/s/V1TAnOD4NeIi"
+            method="post"
           >
-            まずは相談してみる
-          </button>
-          <p class="text-center text-xs text-gray-500 leading-relaxed">
-            営業日・休日にかかわらず、確認後24時間以内に返信します。
-          </p>
-        </form>
+            <input type="hidden" name="source" value="qrogram.com contact form" />
+            <div class="form-grid">
+              <label>
+                Name / Company
+                <input type="text" name="name" placeholder="お名前 / 会社名" required />
+              </label>
+              <label>
+                Email
+                <input type="email" name="email" placeholder="メールアドレス" required />
+              </label>
+            </div>
 
-        <div class="mt-12 text-center text-gray-600 text-[10px] tracking-widest">
-          <span>© 2026 QROGRAM. ALL RIGHTS RESERVED.</span>
+            <label>
+              Project Type
+              <select name="plan">
+                <option value="Not decided yet">まだ決まっていない・まず相談したい</option>
+                <option value="Business Website">会社サイト / ホームページ制作</option>
+                <option value="LP Sprint">LP SPRINT</option>
+                <option value="React / 3D">React / 3D 表現</option>
+                <option value="Other">その他のお問い合わせ</option>
+              </select>
+            </label>
+
+            <div class="form-grid">
+              <label>
+                Launch Date
+                <input type="date" name="launch_date" />
+              </label>
+              <label>
+                Budget
+                <select name="budget_range">
+                  <option value="Not decided yet">まだ未定（見積もり希望）</option>
+                  <option value="50,000 - 120,000">¥50,000 - ¥120,000</option>
+                  <option value="120,000 - 200,000">¥120,000 - ¥200,000</option>
+                  <option value="200,000+">¥200,000以上</option>
+                </select>
+              </label>
+            </div>
+
+            <label>
+              Message
+              <textarea
+                name="message"
+                placeholder="例: サイトを3D表現込みでリニューアルしたい、LPを作りたい、既存サイトを改善したい、など"
+                required
+              ></textarea>
+            </label>
+
+            <button class="submit" type="submit">Send Request</button>
+            <p class="form-note">確認後24時間以内に返信します。</p>
+          </form>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <footer class="sr-only">
-      <p>QROGRAM - Website Production for Small Businesses</p>
-    </footer>
+      <footer class="footer">
+        <span>QROGRAM © 2026</span>
+        <span>Interactive Website Production</span>
+      </footer>
+    </main>
 
     <script>
-      // --- THREE.JS (BACKGROUND) ---
-      const initThreeJS = () => {
-        const container = document.getElementById('canvas-container')
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+      const initScene = () => {
+        const mount = document.getElementById('scene')
+        if (!mount || !window.THREE) return
+
         const scene = new THREE.Scene()
-        const camera = new THREE.PerspectiveCamera(
-          75,
-          window.innerWidth / window.innerHeight,
-          0.1,
-          1000
-        )
-        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true })
+        scene.fog = new THREE.FogExp2(0x050506, 0.045)
+
+        const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 120)
+        camera.position.set(0, 0.2, 11)
+
+        const renderer = new THREE.WebGLRenderer({
+          antialias: true,
+          alpha: true,
+          powerPreference: 'high-performance',
+        })
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.8))
         renderer.setSize(window.innerWidth, window.innerHeight)
-        container.appendChild(renderer.domElement)
+        renderer.outputEncoding = THREE.sRGBEncoding
+        mount.appendChild(renderer.domElement)
 
-        // Particles
-        const geometry = new THREE.BufferGeometry()
-        const count = 1500
-        const posArray = new Float32Array(count * 3)
-        for (let i = 0; i < count * 3; i++) {
-          posArray[i] = (Math.random() - 0.5) * 20
-        }
-        geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3))
-        const material = new THREE.PointsMaterial({
-          size: 0.03,
-          color: 0x555555,
+        const group = new THREE.Group()
+        scene.add(group)
+
+        const key = new THREE.DirectionalLight(0x35d6ff, 2.6)
+        key.position.set(-3, 4, 6)
+        scene.add(key)
+
+        const rim = new THREE.DirectionalLight(0xff4fd8, 1.9)
+        rim.position.set(5, -2, 3)
+        scene.add(rim)
+
+        const fill = new THREE.PointLight(0xd9ff4a, 1.3, 28)
+        fill.position.set(0, 0, 6)
+        scene.add(fill)
+
+        const coreGeometry = new THREE.TorusKnotGeometry(1.55, 0.36, 220, 28, 2, 3)
+        const coreMaterial = new THREE.MeshPhysicalMaterial({
+          color: 0xf7f4ea,
+          metalness: 0.72,
+          roughness: 0.22,
+          clearcoat: 0.8,
+          clearcoatRoughness: 0.18,
+          emissive: 0x111111,
+        })
+        const core = new THREE.Mesh(coreGeometry, coreMaterial)
+        core.scale.set(1.55, 1.55, 1.55)
+        group.add(core)
+
+        const wire = new THREE.Mesh(
+          new THREE.IcosahedronGeometry(3.55, 3),
+          new THREE.MeshBasicMaterial({
+            color: 0x35d6ff,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.16,
+          })
+        )
+        group.add(wire)
+
+        const ringMaterial = new THREE.MeshBasicMaterial({
+          color: 0xffb347,
           transparent: true,
-          opacity: 0.8,
-        })
-        const particlesMesh = new THREE.Points(geometry, material)
-        scene.add(particlesMesh)
-        camera.position.z = 5
-
-        // Mouse interaction
-        let mouseX = 0
-        let mouseY = 0
-        document.addEventListener('mousemove', (e) => {
-          mouseX = e.clientX / window.innerWidth - 0.5
-          mouseY = e.clientY / window.innerHeight - 0.5
+          opacity: 0.32,
+          side: THREE.DoubleSide,
         })
 
-        const animate = () => {
-          requestAnimationFrame(animate)
-          particlesMesh.rotation.y += 0.0005
-          particlesMesh.rotation.x += 0.0005
-          particlesMesh.rotation.x += mouseY * 0.02
-          particlesMesh.rotation.y += mouseX * 0.02
-          renderer.render(scene, camera)
+        for (let i = 0; i < 4; i += 1) {
+          const ring = new THREE.Mesh(new THREE.TorusGeometry(3.05 + i * 0.42, 0.01, 8, 180), ringMaterial)
+          ring.rotation.x = Math.PI / 2 + i * 0.18
+          ring.rotation.y = i * 0.42
+          group.add(ring)
         }
-        animate()
+
+        const shardGeometry = new THREE.ConeGeometry(0.055, 0.52, 5)
+        const shardMaterial = new THREE.MeshPhysicalMaterial({
+          color: 0xd9ff4a,
+          metalness: 0.5,
+          roughness: 0.34,
+          emissive: 0x1b2203,
+        })
+        const shards = new THREE.InstancedMesh(shardGeometry, shardMaterial, 96)
+        const dummy = new THREE.Object3D()
+
+        for (let i = 0; i < 96; i += 1) {
+          const radius = 4.1 + Math.random() * 4.2
+          const angle = Math.random() * Math.PI * 2
+          const height = (Math.random() - 0.5) * 5.8
+          dummy.position.set(Math.cos(angle) * radius, height, Math.sin(angle) * radius)
+          dummy.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI)
+          const scale = 0.75 + Math.random() * 1.7
+          dummy.scale.set(scale, scale, scale)
+          dummy.updateMatrix()
+          shards.setMatrixAt(i, dummy.matrix)
+        }
+        group.add(shards)
+
+        const particleCount = 1300
+        const particleGeometry = new THREE.BufferGeometry()
+        const positions = new Float32Array(particleCount * 3)
+        const colors = new Float32Array(particleCount * 3)
+        const palette = [
+          new THREE.Color(0x35d6ff),
+          new THREE.Color(0xff4fd8),
+          new THREE.Color(0xd9ff4a),
+          new THREE.Color(0xf7f4ea),
+        ]
+
+        for (let i = 0; i < particleCount; i += 1) {
+          const radius = 3 + Math.random() * 11
+          const angle = Math.random() * Math.PI * 2
+          positions[i * 3] = Math.cos(angle) * radius
+          positions[i * 3 + 1] = (Math.random() - 0.5) * 9
+          positions[i * 3 + 2] = Math.sin(angle) * radius - Math.random() * 7
+          const color = palette[Math.floor(Math.random() * palette.length)]
+          colors[i * 3] = color.r
+          colors[i * 3 + 1] = color.g
+          colors[i * 3 + 2] = color.b
+        }
+
+        particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+        particleGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3))
+        const particles = new THREE.Points(
+          particleGeometry,
+          new THREE.PointsMaterial({
+            size: 0.025,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.78,
+            depthWrite: false,
+          })
+        )
+        scene.add(particles)
+
+        let pointerX = 0
+        let pointerY = 0
+        let scrollTarget = 0
+        let scrollCurrent = 0
+
+        window.addEventListener('pointermove', (event) => {
+          pointerX = event.clientX / window.innerWidth - 0.5
+          pointerY = event.clientY / window.innerHeight - 0.5
+        })
+
+        window.addEventListener('scroll', () => {
+          scrollTarget = window.scrollY / Math.max(document.body.scrollHeight - window.innerHeight, 1)
+        })
+
+        const clock = new THREE.Clock()
+        const render = () => {
+          const time = clock.getElapsedTime()
+          scrollCurrent += (scrollTarget - scrollCurrent) * 0.06
+
+          group.rotation.y = time * 0.18 + pointerX * 0.7 + scrollCurrent * 3.8
+          group.rotation.x = -0.18 + pointerY * 0.45 + Math.sin(time * 0.42) * 0.08
+          group.position.x = pointerX * 0.7
+          group.position.y = -0.2 - scrollCurrent * 1.4
+
+          core.rotation.z = time * 0.12
+          wire.rotation.y = -time * 0.08
+          wire.rotation.z = time * 0.05
+          shards.rotation.y = -time * 0.055
+          particles.rotation.y = time * 0.018
+          particles.position.y = -scrollCurrent * 1.8
+          camera.position.z = 10.4 - scrollCurrent * 2.2
+          camera.lookAt(0, 0, 0)
+
+          renderer.render(scene, camera)
+          if (!prefersReducedMotion) requestAnimationFrame(render)
+        }
+
+        render()
 
         window.addEventListener('resize', () => {
           camera.aspect = window.innerWidth / window.innerHeight
@@ -558,41 +1268,35 @@
         })
       }
 
-      // --- GSAP (ANIMATION) ---
-      const initGSAP = () => {
-        gsap.registerPlugin(ScrollTrigger)
-        const tl = gsap.timeline()
-        tl.to('.hero-sub', { y: 0, opacity: 1, duration: 1, delay: 0.5 })
-          .to('.hero-title', { y: 0, opacity: 1, duration: 1.2, ease: 'power3.out' }, '-=0.5')
-          .to('.hero-text', { y: 0, opacity: 1, duration: 1 }, '-=0.8')
-          .to('.hero-btn', { y: 0, opacity: 1, duration: 1 }, '-=0.8')
+      const initMotion = () => {
+        if (!window.gsap || prefersReducedMotion) return
 
-        gsap.utils.toArray('.reveal-text').forEach((el) => {
-          gsap.to(el, {
-            scrollTrigger: { trigger: el, start: 'top 85%' },
-            y: 0,
-            opacity: 1,
-            duration: 1.2,
-            ease: 'power3.out',
-          })
+        gsap.registerPlugin(ScrollTrigger)
+        gsap.from('.hero .reveal', {
+          opacity: 0,
+          y: 42,
+          duration: 1.15,
+          stagger: 0.12,
+          ease: 'power3.out',
+          delay: 0.1,
         })
 
-        // Plan Cards Stagger
-        gsap.utils.toArray('.plan-card').forEach((el, i) => {
-          gsap.to(el, {
-            scrollTrigger: { trigger: '#service', start: 'top 75%' },
-            y: 0,
-            opacity: 1,
-            duration: 1,
-            delay: i * 0.1,
+        gsap.utils.toArray('.section .reveal, .work-band.reveal, form.reveal').forEach((element) => {
+          gsap.from(element, {
+            scrollTrigger: {
+              trigger: element,
+              start: 'top 84%',
+            },
+            y: 42,
+            duration: 0.95,
             ease: 'power3.out',
           })
         })
       }
 
       window.addEventListener('DOMContentLoaded', () => {
-        initThreeJS()
-        initGSAP()
+        initScene()
+        initMotion()
       })
     </script>
   </body>
